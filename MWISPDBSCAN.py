@@ -22,7 +22,7 @@ def dbscanClouds(COFITS,saveFITS=None):
 	:return:
 	"""
 
-	hdu= fits.oepn(COFITS)[0]
+	hdu= fits.open(COFITS)[0]
 
 	data=hdu.data
 	head=hdu.header
