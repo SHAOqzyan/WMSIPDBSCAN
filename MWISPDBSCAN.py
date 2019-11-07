@@ -10,7 +10,7 @@ import numpy as np
 from astropy.table import Table
 from astrodendro import Dendrogram, ppv_catalog
 from sklearn.cluster import DBSCAN
-
+import datetime
 
 
 def dbscanClouds(COFITS,saveFITS=None):
@@ -49,9 +49,49 @@ def dbscanClouds(COFITS,saveFITS=None):
 		fits.writeto(saveFITS ,mask,header=head,overwrite=True)
 
 
+def getMaskFromDBFITS(CO12FITS , DBFITS):
+
+	hdu= fits.open(CO12FITS)[0]
+
+	dataCO=hdu.data
+	headCO=hdu.header
+
+	hdu= fits.open(DBFITS)[0]
+
+	dataDB=hdu.data
+
+	dataCO[dataDB<0]=-1
+
+	fits.writeto("DBMaskedCO.fits",dataCO,header=headCO,overwrite=True  )
+
+
+def doDendro(maskedCOFITS):
+	hdu= fits.open(maskedCOFITS)[0]
+
+	dataCO=hdu.data
+	headCO=hdu.header
+
+	d = Dendrogram.compute(dataCO, min_value=0,  verbose=1, min_npix=16, min_delta=1.5 )
+
+	d.save_to( "localDendro.fits"  )
+
+
+
+
+
+
 CO12FITS=  "G2650Local30.fits"
-import datetime
+
+
 if 1:
+
+
+	getMaskFromDBFITS(CO12FITS,"G2650Local30DB.fits")
+
+
+
+
+if 0:
 	#produceRMS( CO12FITS )
 	#dbscanClouds(CO12FITS,saveFITS="G214.fits")
 	print datetime.datetime.now()
