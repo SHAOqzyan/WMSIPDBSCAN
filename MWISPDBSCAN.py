@@ -84,9 +84,9 @@ CO12FITS=  "G2650Local30.fits"
 
 
 if 1:
+	doDendro("DBMaskedCO.fits")
 
-
-	getMaskFromDBFITS(CO12FITS,"G2650Local30DB.fits")
+	#getMaskFromDBFITS(CO12FITS,"G2650Local30DB.fits")
 
 
 
